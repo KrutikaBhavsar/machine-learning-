@@ -1,4 +1,5 @@
 import numpy as np
+import operator
 """
 Credits: the original code belongs to Stanford CS231n course assignment1. Source link: http://cs231n.github.io/assignments2019/assignment1/
 """
@@ -125,7 +126,9 @@ class KNearestNeighbor:
         #       and two broadcast sums.                                         #
         #########################################################################
         # *****START OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
-        dists = np.sqrt(np.sum(np.power(self.X_train - np.repeat(X[:,np.newaxis,:], num_train, axis=1), 2), axis=2))
+        new_axis_temp = X[:,np.newaxis,:]
+        t = np.repeat(new_axis_temp, num_train, axis=1)
+        dists = np.sqrt(np.sum(np.power(self.X_train - t, 2), axis=2))
         # *****END OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
         return dists
 
@@ -155,7 +158,7 @@ class KNearestNeighbor:
             # Hint: Look up the function numpy.argsort.                             #
             #########################################################################
             # *****START OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
-            closest_y = list(self.y_train[np.argsort(dists[i])[:k]])
+            closest_y = list(self.y_train[np.argsort(dists[i])[0:k]])
             # *****END OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
             #########################################################################
             # TODO:                                                                 #
@@ -165,6 +168,9 @@ class KNearestNeighbor:
             # label.                                                                #
             #########################################################################
             # *****START OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
+            a = dict(map(lambda x: (x, closest_y.count(x)), closest_y))
+            y_pred[i] = max(a.items(), key=operator.itemgetter(1))[0]
+            #y_pred[i] = max(set(closest_y), key=closest_y.count)
             # *****END OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
 
         return y_pred
