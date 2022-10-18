@@ -170,7 +170,6 @@ class KNearestNeighbor:
             # *****START OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
             a = dict(map(lambda x: (x, closest_y.count(x)), closest_y))
             y_pred[i] = max(a.items(), key=operator.itemgetter(1))[0]
-            #y_pred[i] = max(set(closest_y), key=closest_y.count)
             # *****END OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
 
         return y_pred
