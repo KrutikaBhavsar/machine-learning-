@@ -93,9 +93,8 @@ class LossAndDerivatives:
         """
 
         # YOUR CODE HERE
-        xw = X.dot(w) - Y
-        transp = X.T.dot(xw)
-        return 2 * transp / Y.size
+        xw = Y.shape[0] if len(Y.shape) == 1 else Y.shape[0] * Y.shape[1]
+        return -2 * X.T.dot(Y - X.dot(w)) / xw
 
     @staticmethod
     def mae_derivative(X, Y, w):
@@ -114,7 +113,8 @@ class LossAndDerivatives:
         """
 
         # YOUR CODE HERE
-        return 
+        xw_ = Y.shape[0] if len(Y.shape) == 1 else Y.shape[0] * Y.shape[1]
+        return X.T.dot(np.sign(X.dot(w) - Y)) / xw_
 
     @staticmethod
     def l2_reg_derivative(w):
